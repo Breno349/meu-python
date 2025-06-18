@@ -1,7 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-class handler(BaseHTTPRequestHandler)
-
 def handler(request, response):
     # Cabeçalhos customizados
     response.set_header('Content-Type', 'text/plain; charset=utf-8')
