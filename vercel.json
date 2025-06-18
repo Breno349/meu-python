@@ -7,8 +7,8 @@
       ],
       "routes": [
         {
-          "src": "/(.*)", // Matches all incoming requests
-          "dest": "api/index.py" // Routes requests to your main Python handler
+          "src": "/(.*)",
+          "dest": "api/index.py"
         }
       ]
     }
