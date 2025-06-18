@@ -1,13 +1,8 @@
-{
-  "functions": {
-    "api/index.py": {
-      "runtime": "python3.9"
-    }
-  },
-  "routes": [
     {
-      "src": "/(.*)",
-      "dest": "api/index.py"
+      "builds": [
+        {
+          "src": "api/*.py", // Or specify the path to your main Python file, e.g., "main.py"
+          "use": "@vercel/python"
+        }
+      ]
     }
-  ]
-}
