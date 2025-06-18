@@ -1,25 +1,36 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-def handler(request, response):
-    # Cabeçalhos customizados
+def send_plain_text(response, text, status=200, extra_headers=None):
+    response.status_code = status
     response.set_header('Content-Type', 'text/plain; charset=utf-8')
-    response.set_header('X-Custom-Header', 'MeuServidorVercel')
+    if extra_headers:
+        for k, v in extra_headers.items():
+            response.set_header(k, v)
+    response.send(text)
 
-    # Acessando o método HTTP
-    method = request.method
+def send_json(response, data, status=200):
+    import json
+    response.status_code = status
+    response.set_header('Content-Type', 'application/json; charset=utf-8')
+    response.send(json.dumps(data))
 
-    # Pegando caminho e query params
+def handler(request, response):
+    method = request.method.upper()
     path = request.url
-    query = request.args  # dict-like com parâmetros da query string
+    query = request.args
 
-    # Criando resposta baseada no método
     if method == 'GET':
-        # Exemplo de resposta simples
-        response.status_code = 200
         name = query.get('name', 'mundo')
-        response.send(f"Olá, {name}! Você acessou: {path}\nMétodo: {method}\n")
+        message = f"Olá, {name}! Você acessou: {path}\nMétodo: {method}"
+        send_plain_text(response, message)
+
+    elif method == 'POST':
+        try:
+            body = request.body.decode('utf-8')
+        except Exception:
+            body = "<não foi possível decodificar o corpo>"
+        message = f"Recebi um POST com o corpo:\n{body}"
+        send_plain_text(response, message)
+
     else:
-        # Métodos não implementados
-        response.status_code = 405
-        response.set_header('Allow', 'GET')
-        response.send("Método não permitido")
+        send_plain_text(response, "Método não permitido", status=405, extra_headers={"Allow": "GET, POST"})
