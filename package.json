@@ -10,7 +10,7 @@
 		"node": ">=0.10.0"
 	},
 	"files": [
-		"app.js"
+		"index.js"
 	],
 	"author": "Thiago Ferreira",
 	"license": "MIT",
